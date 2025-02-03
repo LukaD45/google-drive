@@ -10,7 +10,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Google drive",
-  description: "Google drive - the only storage you need",
+  description: "Google drive - The only storage you need",
 };
 
 export default function RootLayout({
