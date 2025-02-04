@@ -5,3 +5,6 @@ export const navItems = [
   { name: "Media", icon: "/assets/icons/video.svg", url: "/media" },
   { name: "Others", icon: "/assets/icons/others.svg", url: "/others" },
 ];
+
+export const avatarPlaceholder =
+  "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png";
