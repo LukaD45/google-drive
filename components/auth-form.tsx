@@ -20,13 +20,9 @@ import Link from "next/link";
 import { createAccount } from "@/lib/actions/user.actions";
 import OtpModal from "./otp-modal";
 
-const formSchema = z.object({
-  username: z.string().min(2).max(50),
-});
-
 type FormType = "sign-in" | "sign-up";
 
-const AuthFormSchema = (formType: FormType) => {
+const authFormSchema = (formType: FormType) => {
   return z.object({
     email: z.string().email(),
     fullName:
@@ -41,8 +37,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [accountId, setAccountId] = useState(null);
 
-  const formSchema = AuthFormSchema(type);
-
+  const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,6 +49,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setErrorMessage("");
+
     try {
       const user = await createAccount({
         fullName: values.fullName || "",
@@ -83,6 +79,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 <FormItem>
                   <div className="shad-form-item">
                     <FormLabel className="shad-form-label">Full Name</FormLabel>
+
                     <FormControl>
                       <Input
                         placeholder="Enter your full name"
@@ -97,6 +94,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               )}
             />
           )}
+
           <FormField
             control={form.control}
             name="email"
@@ -104,6 +102,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               <FormItem>
                 <div className="shad-form-item">
                   <FormLabel className="shad-form-label">Email</FormLabel>
+
                   <FormControl>
                     <Input
                       placeholder="Enter your email"
@@ -117,6 +116,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               </FormItem>
             )}
           />
+
           <Button
             type="submit"
             className="form-submit-button"
@@ -127,14 +127,16 @@ const AuthForm = ({ type }: { type: FormType }) => {
             {isLoading && (
               <Image
                 src="/assets/icons/loader.svg"
+                alt="loader"
                 width={24}
                 height={24}
                 className="ml-2 animate-spin"
-                alt="Loader"
               />
             )}
           </Button>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+          {errorMessage && <p className="error-message">*{errorMessage}</p>}
+
           <div className="body-2 flex justify-center">
             <p className="text-light-100">
               {type === "sign-in"
@@ -145,6 +147,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               href={type === "sign-in" ? "/sign-up" : "/sign-in"}
               className="ml-1 font-medium text-brand"
             >
+              {" "}
               {type === "sign-in" ? "Sign Up" : "Sign In"}
             </Link>
           </div>
