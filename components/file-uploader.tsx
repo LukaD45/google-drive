@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { Button } from "./ui/button";
 import { cn, getFileType } from "@/lib/utils";
 import Image from "next/image";
-
+import Thumbnail from "./thumbnail";
 interface FileUploaderProps {
   ownerId: string;
   accountId: string;
@@ -13,7 +13,8 @@ interface FileUploaderProps {
 
 const FileUploader = ({ ownerId, accountId, className }: FileUploaderProps) => {
   const [files, setFiles] = useState<File[]>([]);
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    setFiles(acceptedFiles);
     // Do something with the files
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -40,7 +41,13 @@ const FileUploader = ({ ownerId, accountId, className }: FileUploaderProps) => {
                 key={`${file.name}-${index}`}
                 className="uploader-preview-item"
               >
-                test
+                <div className="flex items-center gap-3">
+                  <Thumbnail
+                    type={type}
+                    extension={extension}
+                    url={convertFileToUrl(file)}
+                  />
+                </div>
               </li>
             );
           })}
