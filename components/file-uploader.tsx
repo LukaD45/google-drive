@@ -19,6 +19,15 @@ const FileUploader = ({ ownerId, accountId, className }: FileUploaderProps) => {
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+  const handleRemoveFile = (
+    e: React.MouseEvent<HTMLImageElement>,
+    fileName: string
+  ) => {
+    e.stopPropagation();
+
+    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
+  };
+
   return (
     <div {...getRootProps()} className="cursor-pointer">
       <input {...getInputProps()} />
@@ -63,7 +72,7 @@ const FileUploader = ({ ownerId, accountId, className }: FileUploaderProps) => {
                   alt="remove"
                   width={24}
                   height={24}
-                  onClick={(e) => handleRemoveFile(e, index)}
+                  onClick={(e) => handleRemoveFile(e, file.name)}
                 />
               </li>
             );
