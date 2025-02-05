@@ -47,7 +47,24 @@ const FileUploader = ({ ownerId, accountId, className }: FileUploaderProps) => {
                     extension={extension}
                     url={convertFileToUrl(file)}
                   />
+
+                  <div className="preview-item-name">
+                    {file.name}
+                    <Image
+                      src="/assets/icons/file-loader.gif"
+                      alt="Loader"
+                      width={80}
+                      height={26}
+                    />
+                  </div>
                 </div>
+                <Image
+                  src="/assets/icons/remove.svg"
+                  alt="remove"
+                  width={24}
+                  height={24}
+                  onClick={(e) => handleRemoveFile(e, index)}
+                />
               </li>
             );
           })}
