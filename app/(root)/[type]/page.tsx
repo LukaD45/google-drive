@@ -1,7 +1,10 @@
 import Sort from "@/components/sort";
+import { getFiles } from "@/lib/actions/file.actions";
 
 const Page = async ({ params }: SearchParamProps) => {
   const type = ((await params)?.type as string) || "";
+
+  const files = await getFiles();
   return (
     <div className="page-container">
       <section className="w-full">
@@ -16,6 +19,12 @@ const Page = async ({ params }: SearchParamProps) => {
           </div>
         </div>
       </section>
+
+      {files.length > 0 ? (
+        <section></section>
+      ) : (
+        <p className="empty-list">No files uploaded</p>
+      )}
     </div>
   );
 };
