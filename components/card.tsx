@@ -3,6 +3,7 @@ import { Models } from "node-appwrite";
 import Thumbnail from "./thumbnail";
 import { convertFileSize } from "@/lib/utils";
 import FormattedDateTime from "./fomatted-date-time";
+import ActionDropdown from "./action-dropdown";
 
 const Card = ({ file }: { file: Models.Document }) => {
   return (
@@ -16,7 +17,7 @@ const Card = ({ file }: { file: Models.Document }) => {
           imageClassName="!size-11"
         />
         <div className="flex flex-col items-end justify-between">
-          ActionsDropdown...
+          <ActionDropdown file={file} />
           {<p className="body-1 ">{convertFileSize(file.size)}</p>}
         </div>
       </div>
