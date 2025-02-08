@@ -45,6 +45,7 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
 
   const handleAction = async () => {
     if (!action) return;
+
     setIsLoading(true);
     let success = false;
 
@@ -63,6 +64,12 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
         console.log("Delete");
       },
     };
+    success = await actions[action.value as keyof typeof actions]();
+
+    if (success) {
+      closeAllModals();
+      setIsLoading(false);
+    }
   };
 
   const [action, setAction] = useState<ActionType | null>(null);
