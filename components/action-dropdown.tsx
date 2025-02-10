@@ -2,11 +2,9 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import {
@@ -25,7 +23,7 @@ import { Models } from "node-appwrite";
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { renameFile } from "@/lib/actions/file.actions";
+import { renameFile, updateFileUsers } from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
 import { FileDetails } from "./actions-modal-content";
 import { ShareInput } from "./actions-modal-content";
@@ -61,7 +59,11 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
           path,
         }),
       share: () => {
-        console.log("Share");
+        updateFileUsers({
+          fileId: file.$id,
+          emails,
+          path,
+        });
       },
       delete: () => {
         console.log("Delete");
@@ -77,7 +79,20 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
 
   const [action, setAction] = useState<ActionType | null>(null);
 
-  const handleRemoveUser = () => {};
+  const handleRemoveUser = async (email: string) => {
+    const updatedEmails = emails.filter((e) => e !== email);
+
+    const success = await updateFileUsers({
+      fileId: file.$id,
+      emails: updatedEmails,
+      path,
+    });
+
+    if (success) {
+      setEmails(updatedEmails);
+    }
+    closeAllModals();
+  };
 
   const renderDialogContent = () => {
     if (!action) return null;
@@ -96,6 +111,7 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
               onChange={(e) => setName(e.target.value)}
             />
           )}
+          {value === "details" && <FileDetails file={file} />}
           {value === "share" && (
             <ShareInput
               file={file}
@@ -103,7 +119,12 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
               onRemoveUser={handleRemoveUser}
             />
           )}
-          {value === "details" && <FileDetails file={file} />}
+          {value === "delete" && (
+            <p className="delete-confirmation ">
+              Are you sure you want to delete {``}
+              <span className="delete-file-name">{file.name}</span>?
+            </p>
+          )}
         </DialogHeader>
 
         {["rename", "share", "delete"].includes(value) && (
