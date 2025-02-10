@@ -28,6 +28,7 @@ import { Button } from "./ui/button";
 import { renameFile } from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
 import { FileDetails } from "./actions-modal-content";
+import ShareInput from "./share-input";
 
 const ActionDropdown = ({ file }: { file: Models.Document }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,6 +36,7 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
   const [name, setName] = useState(file.name);
   const [isLoading, setIsLoading] = useState(false);
   const path = usePathname();
+  const [emails, setEmails] = useState([]);
 
   const closeAllModals = () => {
     setIsModalOpen(false);
@@ -75,6 +77,8 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
 
   const [action, setAction] = useState<ActionType | null>(null);
 
+  const handleRemoveUser = () => {};
+
   const renderDialogContent = () => {
     if (!action) return null;
 
@@ -92,8 +96,16 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
               onChange={(e) => setName(e.target.value)}
             />
           )}
+          {value === "share" && (
+            <ShareInput
+              file={file}
+              onInputChange={setEmails}
+              onRemoveUser={handleRemoveUser}
+            />
+          )}
           {value === "details" && <FileDetails file={file} />}
         </DialogHeader>
+
         {["rename", "share", "delete"].includes(value) && (
           <DialogFooter className="flex flex-col gap-3 md:flex-row">
             <Button onClick={closeAllModals} className="modal-cancel-button">
