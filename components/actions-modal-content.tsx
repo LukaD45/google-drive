@@ -3,6 +3,8 @@ import Thumbnail from "./thumbnail";
 import FormattedDateTime from "./fomatted-date-time";
 import { convertFileSize, formatDateTime } from "@/lib/utils";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import Image from "next/image";
 
 const ImageThumbnail = ({ file }: { file: Models.Document }) => (
   <div className="file-details-thumbnail">
@@ -69,6 +71,25 @@ export const ShareInput = ({
               {file.users.length} users
             </p>
           </div>
+          <ul className="pt-2 ">
+            {file.users.map((email: string) => (
+              <li
+                key={email}
+                className="flex items-center justify-between gap-2"
+              >
+                <p className="subtitle-2">{email}</p>
+                <Button onClick={() => onRemoveUser(email)}>
+                  <Image
+                    src="/icons/remove.svg"
+                    alt="remove"
+                    width={24}
+                    height={24}
+                    className="remove-icon"
+                  />
+                </Button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>
