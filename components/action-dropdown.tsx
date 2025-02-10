@@ -23,7 +23,11 @@ import { Models } from "node-appwrite";
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { renameFile, updateFileUsers } from "@/lib/actions/file.actions";
+import {
+  deleteFile,
+  renameFile,
+  updateFileUsers,
+} from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
 import { FileDetails } from "./actions-modal-content";
 import { ShareInput } from "./actions-modal-content";
@@ -58,16 +62,18 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
           extension: file.extension,
           path,
         }),
-      share: () => {
+      share: () =>
         updateFileUsers({
           fileId: file.$id,
           emails,
           path,
-        });
-      },
-      delete: () => {
-        console.log("Delete");
-      },
+        }),
+      delete: () =>
+        deleteFile({
+          fileId: file.$id,
+          bucketFileId: file.bucketFileId,
+          path,
+        }),
     };
     success = await actions[action.value as keyof typeof actions]();
 
