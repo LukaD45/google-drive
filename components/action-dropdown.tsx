@@ -28,7 +28,7 @@ import { Button } from "./ui/button";
 import { renameFile } from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
 import { FileDetails } from "./actions-modal-content";
-import ShareInput from "./share-input";
+import { ShareInput } from "./actions-modal-content";
 
 const ActionDropdown = ({ file }: { file: Models.Document }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
