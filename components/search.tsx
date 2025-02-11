@@ -2,13 +2,14 @@
 import Image from "next/image";
 import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getFiles } from "@/lib/actions/file.actions";
 import { Models } from "node-appwrite";
 import Thumbnail from "./thumbnail";
 import FormattedDateTime from "./fomatted-date-time";
 
 const Search = () => {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("query") || "";
@@ -30,6 +31,14 @@ const Search = () => {
     }
     setQuery(searchQuery);
   }, [searchQuery]);
+
+  const handleClickItem = (file: Models.Document) => {
+    setOpen(false);
+    setResults([]);
+    router.push(
+      `/${file.type === "video" ? "/media" : file.type + "s"}?query=${query}`
+    );
+  };
 
   return (
     <div className="search">
